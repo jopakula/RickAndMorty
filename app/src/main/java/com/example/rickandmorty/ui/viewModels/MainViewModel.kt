@@ -11,15 +11,43 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val fetchCharactersUseCase: FetchCharactersUseCase
-): ViewModel() {
+) : ViewModel() {
 
     private val charactersStateMutable = MutableStateFlow<RequestState<List<MyCharacter>>>(RequestState.Idle)
     val charactersState: StateFlow<RequestState<List<MyCharacter>>> = charactersStateMutable
 
+    private val charactersList = mutableListOf<MyCharacter>()
+
+    private var currentPage = 1
+
+    private var isLastPage = false
+    private var isLoading = false
+
     fun loadCharacters() {
+        if (isLoading || isLastPage) return
+
+        isLoading = true
         charactersStateMutable.value = RequestState.Loading
+
         viewModelScope.launch {
-            charactersStateMutable.value = fetchCharactersUseCase.execute()
+            val request = fetchCharactersUseCase.execute(page = currentPage)
+            when (request) {
+                is RequestState.Success -> {
+                    if (request.data.isEmpty()) {
+                        isLastPage = true
+                    } else {
+                        charactersList.addAll(request.data)
+                        charactersStateMutable.value = RequestState.Success(charactersList.toList())
+                        currentPage++
+                    }
+                }
+                is RequestState.Error -> {
+                    charactersStateMutable.value = RequestState.Error(request.message)
+                }
+                else -> {}
+            }
+            isLoading = false
         }
     }
 }
+

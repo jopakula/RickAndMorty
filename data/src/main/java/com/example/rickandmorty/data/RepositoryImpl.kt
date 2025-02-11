@@ -8,8 +8,8 @@ import com.example.rickandmorty.domain.models.CharacterResponse
 class RepositoryImpl(
     private val networkStorage: NetworkStorage
 ) : Repository {
-    override suspend fun fetchCharacters(): CharacterResponse {
-        val responseData = networkStorage.fetchCharacters()
+    override suspend fun fetchCharacters(page: Int): CharacterResponse {
+        val responseData = networkStorage.fetchCharacters(page = page)
         return CharacterMapper.mapCharacterResponseDataToDomain(responseData)
     }
 }

@@ -6,7 +6,7 @@ import com.example.rickandmorty.data.storage.network.models.CharacterResponseDat
 class NetworkStorageImpl(
     private val api: Api
 ): NetworkStorage {
-    override suspend fun fetchCharacters(): CharacterResponseData {
-        return api.getCharacters()
+    override suspend fun fetchCharacters(page: Int): CharacterResponseData {
+        return api.getCharacters(page = page)
     }
 }
