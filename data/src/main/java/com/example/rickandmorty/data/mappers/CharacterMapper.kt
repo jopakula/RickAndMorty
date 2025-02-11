@@ -21,6 +21,7 @@ class CharacterMapper {
                 id = characterData.id,
                 name = characterData.name,
                 status = characterData.status,
+                species = characterData.species,
                 gender = characterData.gender,
                 image = characterData.image,
                 origin = mapOriginDataToDomain(origin = characterData.origin)

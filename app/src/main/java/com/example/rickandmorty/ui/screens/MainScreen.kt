@@ -3,17 +3,14 @@ package com.example.rickandmorty.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.rickandmorty.domain.RequestState
 import com.example.rickandmorty.domain.models.MyCharacter
 import com.example.rickandmorty.ui.items.CharacterItem
+import com.example.rickandmorty.ui.items.ShimmerListItem
 import com.example.rickandmorty.ui.viewModels.MainViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -66,17 +64,23 @@ fun MainScreen(
                 }
             }
             is RequestState.Loading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    repeat(10) {
+                        ShimmerListItem(isLoading = true) {
+                        }
+                    }
+                }
             }
             is RequestState.Success -> {
                 val characters = (charactersState as RequestState.Success<List<MyCharacter>>).data
-                LazyColumn(state = listState) {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    state = listState,
+                    ) {
                     items(characters) { character ->
                         CharacterItem(character)
-                    }
-                    item {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                     }
                 }
             }
