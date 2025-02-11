@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.rickandmorty"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.rickandmorty"
@@ -40,6 +40,22 @@ android {
 }
 
 dependencies {
+
+
+    // coroutines
+    implementation(libs.jetbrains.kotlinx.coroutines.core)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
+
+    // View Model
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // koin
+    implementation (libs.koin.androidx.compose)
+    implementation (libs.koin.core)
+
+    // modules
+    implementation(project(":data"))
+    implementation(project(":domain"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
