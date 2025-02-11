@@ -41,6 +41,8 @@ android {
 
 dependencies {
 
+    // glide
+    implementation (libs.compose.glide)
 
     // coroutines
     implementation(libs.jetbrains.kotlinx.coroutines.core)
